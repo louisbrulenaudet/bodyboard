@@ -1,5 +1,5 @@
-# Bodyboard, canonical instructions for code helpers from a single AGENTS.md file (OpenAI Codex, GitHub Copilot, Cline, Gemini CLI) 🌊
-**Bodyboard** generates canonical instructions for code helpers from a single [`AGENTS.md`](./AGENTS.md) file. It streamlines adapter outputs for Gemini, Copilot, and Cline integrations.
+# Bodyboard, canonical instructions for code helpers from a single AGENTS.md 🌊
+**Bodyboard** generates canonical instructions for code helpers from a single [`AGENTS.md`](./AGENTS.md) file. It streamlines adapter outputs for Gemini CLI, Copilot, Cline and OpenAI Codex integrations.
 
 ## Installation
 
