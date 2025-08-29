@@ -1,0 +1,32 @@
+{
+  "name": "bodyboard",
+  "version": "0.1.0",
+  "description": "Generate instructions for code helpers from a single AGENTS.md file.",
+  "author": "Louis Brulé Naudet",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "bodyboard": "dist/cli.js"
+  },
+  "files": ["dist", "README.md", "AGENTS.md", "biome.json"],
+  "scripts": {
+    "build": "tsc -p .",
+    "prepublishOnly": "npm run build && npm run check",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "check": "biome check .",
+    "bodyboard": "node dist/cli.js"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.8.3",
+    "@types/node": "^20.19.11",
+    "@types/ora": "^3.1.0",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "ora": "^8.2.0"
+  }
+}
