@@ -1,17 +1,88 @@
 {
   "name": "bodyboard",
   "version": "0.1.0",
-  "description": "Generate instructions for code helpers from a single AGENTS.md file.",
-  "author": "Louis Brulé Naudet",
+  "description": "Generate canonical instructions for code helpers from a single AGENTS.md file",
+  "keywords": [
+    "code",
+    "helper",
+    "instructions",
+    "agents",
+    "adapter",
+    "cli",
+    "copilot",
+    "cline",
+    "cursor",
+    "github-copilot",
+    "vibe-coding",
+    "automation",
+    "markdown",
+    "typescript"
+  ],
+  "homepage": "https://github.com/louisbrulenaudet/bodyboard",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/louisbrulenaudet/bodyboard.git",
+    "directory": ""
+  },
+  "bugs": {
+    "url": "https://github.com/louisbrulenaudet/bodyboard/issues",
+    "email": "louisbrulenaudet@icloud.com"
+  },
+  "author": "Louis Brulé Naudet <louisbrulenaudet@icloud.com> (https://github.com/louisbrulenaudet)",
+  "contributors": [
+    {
+      "name": "Louis Brulé Naudet",
+      "email": "louisbrulenaudet@icloud.com",
+      "url": "https://github.com/louisbrulenaudet"
+    }
+  ],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/louisbrulenaudet"
+  },
+  "readme": "README.md",
   "license": "MIT",
   "type": "module",
+  "main": "dist/cli.js",
+  "types": "dist/cli.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/cli.js",
+      "require": "./dist/cli.js"
+    }
+  },
+  "imports": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "private": false,
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ],
+  "directories": {
+    "lib": "src",
+    "doc": "docs",
+    "test": "test"
+  },
+  "config": {},
   "engines": {
     "node": ">=20"
   },
   "bin": {
     "bodyboard": "dist/cli.js"
   },
-  "files": ["dist", "README.md", "AGENTS.md", "biome.json"],
+  "files": [
+    "dist",
+    "README.md",
+    "AGENTS.md",
+    "biome.json"
+  ],
   "scripts": {
     "build": "tsc -p .",
     "prepublishOnly": "npm run build && npm run check",
