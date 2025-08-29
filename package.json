@@ -56,15 +56,8 @@
     "access": "public"
   },
   "private": false,
-  "os": [
-    "darwin",
-    "linux",
-    "win32"
-  ],
-  "cpu": [
-    "x64",
-    "arm64"
-  ],
+  "os": ["darwin", "linux", "win32"],
+  "cpu": ["x64", "arm64"],
   "directories": {
     "lib": "src",
     "doc": "docs",
@@ -77,12 +70,7 @@
   "bin": {
     "bodyboard": "dist/cli.js"
   },
-  "files": [
-    "dist",
-    "README.md",
-    "AGENTS.md",
-    "biome.json"
-  ],
+  "files": ["dist", "README.md", "AGENTS.md", "biome.json"],
   "scripts": {
     "build": "tsc -p .",
     "prepublishOnly": "npm run build && npm run check",
