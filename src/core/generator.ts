@@ -1,7 +1,6 @@
 // src/core/generator.ts
 
 import { relative } from "node:path";
-import ora from "ora";
 import type { TargetAdapter } from "../adapters/base.js";
 import type { EmitResult, Logger } from "./types.js";
 
@@ -12,21 +11,6 @@ export class MultiTargetGenerator {
   constructor(adapters: TargetAdapter[], logger: Logger) {
     this.adapters = adapters;
     this.logger = logger;
-  }
-
-  private createProgressBar(
-    current: number,
-    total: number,
-    width = 20,
-  ): string {
-    const percentage = current / total;
-    const filled = Math.round(width * percentage);
-    const empty = width - filled;
-
-    const filledChar = "█";
-    const emptyChar = "░";
-
-    return `[${filledChar.repeat(filled)}${emptyChar.repeat(empty)}]`;
   }
 
   private getRelativePath(fullPath: string, basePath: string): string {
@@ -55,25 +39,14 @@ export class MultiTargetGenerator {
     this.logger.debug(`Output directory: ${outDir}`);
     this.logger.debug(`Dry run mode: ${dryRun}`);
 
-    // Explicitly log the "Surf's up!" message before spinner
     this.logger.log(`✨ Surf's up! Generating all ${total} targets...`);
-    const mainSpinner = ora({
-      text: `🏄 Surf's up! Generating all ${total} targets...`,
-      spinner: "dots",
-      color: "cyan",
-    }).start();
 
+    const startTime = Date.now();
     try {
+      const generatedNames: string[] = [];
       for (let i = 0; i < total; i++) {
         const adapter = this.adapters[i];
         if (!adapter) continue;
-
-        // Update spinner text to show current progress with better formatting
-        const done = i + 1;
-        const percentage = Math.round((done / total) * 100);
-        const progressBar = this.createProgressBar(done, total, 20);
-
-        mainSpinner.text = `🏄‍♂️ ${progressBar} ${adapter.targetName} (${done}/${total} - ${percentage}%)`;
 
         const adapterStartTime = Date.now();
         const result = await adapter.emit(agentContent, outDir, dryRun);
@@ -81,32 +54,25 @@ export class MultiTargetGenerator {
 
         results.push(result);
 
-        // Show completion for this adapter with better formatting
-        const status = result.written ? "✅" : "🤙";
-        const action = result.written ? "Generated" : "Dry-run";
-        const relativePath = this.getRelativePath(result.path, process.cwd());
-        const timing =
-          adapterDuration > 1000
-            ? `(${(adapterDuration / 1000).toFixed(1)}s)`
-            : `(${adapterDuration}ms)`;
+        this.logger.debug(`EmitResult: ${JSON.stringify(result)}`);
 
-        mainSpinner.succeed(
-          `${status} ${action}: ${adapter.targetName} → ${relativePath} ${timing}`,
-        );
-
+        if (result.written) {
+          generatedNames.push(adapter.targetName);
+        }
         this.logger.debug(
           `${adapter.targetName} completed in ${adapterDuration}ms`,
         );
-
-        // Restart spinner for next item if not the last one
-        if (i < total - 1) {
-          mainSpinner.start();
-        }
       }
 
-      this.logger.log("🌊 Ready for the next wave!");
+      if (generatedNames.length > 0) {
+        const totalDuration = Date.now() - startTime;
+        this.logger.success(
+          `generated ${generatedNames.length} files in ${totalDuration}ms. Ready for the next wave!`,
+        );
+      } else {
+        this.logger.info("No files generated.");
+      }
     } catch (error) {
-      mainSpinner.fail("❌ Generation failed");
       this.logger.error(
         `Generation failed: ${error instanceof Error ? error.message : String(error)}`,
       );
@@ -136,13 +102,6 @@ export class MultiTargetGenerator {
     this.logger.debug(`Output directory: ${outDir}`);
     this.logger.debug(`Dry run mode: ${dryRun}`);
 
-    // Create spinner for single target generation
-    const spinner = ora({
-      text: `🏄‍♂️ Surf's up! Generating ${adapter.targetName}...`,
-      spinner: "dots",
-      color: "cyan",
-    }).start();
-
     const startTime = Date.now();
 
     try {
@@ -155,7 +114,7 @@ export class MultiTargetGenerator {
           duration > 1000
             ? `(${(duration / 1000).toFixed(1)}s)`
             : `(${duration}ms)`;
-        spinner.succeed(
+        this.logger.log(
           `Generated: ${adapter.targetName} → ${relativePath} ${timing}`,
         );
       } else if (result) {
@@ -164,12 +123,12 @@ export class MultiTargetGenerator {
           duration > 1000
             ? `(${(duration / 1000).toFixed(1)}s)`
             : `(${duration}ms)`;
-        spinner.succeed(
+        this.logger.log(
           `🤙 Dry-run: ${adapter.targetName} → ${relativePath} ${timing}`,
         );
         this.logger.info(`Dry-run completed for ${adapter.targetName}`);
       } else {
-        spinner.fail(`❌ Failed to generate: ${adapter.targetName}`);
+        this.logger.error(`❌ Failed to generate: ${adapter.targetName}`);
         this.logger.error(`Generation failed for ${adapter.targetName}`);
       }
 
@@ -178,7 +137,6 @@ export class MultiTargetGenerator {
       return result;
     } catch (error) {
       const duration = Date.now() - startTime;
-      spinner.fail(`❌ Failed to generate: ${adapter.targetName}`);
       this.logger.error(
         `Generation failed for ${adapter.targetName}: ${error instanceof Error ? error.message : String(error)}`,
       );
