@@ -1,6 +1,6 @@
-<div style="text-align: center;">
-  <img src="assets/thumbnail.png" alt="Bodyboard Thumbnail" style="max-height: 200px;" />
-</div>
+<p align="center">
+  <img src="assets/thumbnail.png" alt="Bodyboard Thumbnail" height="200" />
+</p>
 
 # Bodyboard, canonical instructions for code helpers from a single AGENTS.md 🌊
 **Bodyboard** generates canonical instructions for code helpers from a single [`AGENTS.md`](./AGENTS.md) file. It streamlines adapter outputs for Gemini CLI, Copilot, Cline and OpenAI Codex integrations.
