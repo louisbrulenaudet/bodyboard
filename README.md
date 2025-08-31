@@ -14,7 +14,7 @@ Maintaining consistency across diverse code assistant configuration files presen
 npm install -g bodyboard
 ```
 
-Generate adapter outputs for all supported formats.
+Generate adapter outputs for all supported formats:
 
 ```bash
 bodyboard create all
