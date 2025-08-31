@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/thumbnail.png" alt="Bodyboard Thumbnail" height="200" />
+  <img src="assets/thumbnail.png" alt="Bodyboard Thumbnail" height="150" />
 </p>
 
 # Bodyboard, canonical instructions for code helpers from a single AGENTS.md 🌊
