@@ -5,7 +5,7 @@
 # Bodyboard, canonical instructions for code helpers from a single AGENTS.md 🌊
 
 [![Biome](https://img.shields.io/badge/lint-biome-blue?logo=biome)](https://biomejs.dev/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
 [![CI](https://github.com/louisbrulenaudet/bodyboard/actions/workflows/ci.yaml/badge.svg)](https://github.com/louisbrulenaudet/bodyboard/actions/workflows/ci.yaml)
 [![npm](https://img.shields.io/npm/v/bodyboard)](https://www.npmjs.com/package/bodyboard)
 
