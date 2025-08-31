@@ -6,6 +6,9 @@ import { join, resolve } from "node:path";
 import { ClineAdapter } from "./adapters/cline.js";
 import { CopilotAdapter } from "./adapters/copilot.js";
 import { GeminiAdapter } from "./adapters/gemini.js";
+import { ClaudeAdapter } from "./adapters/claude.js";
+import { WindsurfAdapter } from "./adapters/windsurf.js";
+import { RulesAdapter } from "./adapters/rules.js";
 import { MultiTargetGenerator } from "./core/generator.js";
 import { parseAgentDoc } from "./core/parser.js";
 import type { LogLevel, Logger } from "./core/types.js";
@@ -35,6 +38,7 @@ class ConsoleLogger implements Logger {
       "Success!",
       "Dry-run",
       "Finished generating",
+      "No files generated.",
       "🏄‍♂️",
       "🎉",
       "🤙",
@@ -100,20 +104,51 @@ function usage() {
 
 async function main() {
   const args = process.argv.slice(2);
-  if (args.length < 2 || args[0] !== "create") usage();
 
-  const verbose = args.includes("--verbose");
+  // Determine if "create" is present or not
+  let target = "";
+  let verbose = false;
+  let dryRun = false;
+  let outDir = process.cwd();
 
-  let target = typeof args[1] === "string" ? args[1] : "";
-  if (target === "--all") target = "all";
+  if (args.length === 0) usage();
+
+  verbose = args.includes("--verbose");
+  dryRun = args.includes("--dry-run");
   const outIdx = args.indexOf("--out");
-  const outDir =
+  if (
     outIdx !== -1 &&
     typeof args[outIdx + 1] === "string" &&
     args[outIdx + 1] !== undefined
-      ? resolve(args[outIdx + 1] as string)
-      : process.cwd();
-  const dryRun = args.includes("--dry-run");
+  ) {
+    outDir = resolve(args[outIdx + 1] as string);
+  }
+
+  // If first arg is "create", use second arg as target
+  // If first arg is "all" or a valid target, use first arg as target
+  const adapters = [
+    new GeminiAdapter(new ConsoleLogger(verbose)),
+    new CopilotAdapter(new ConsoleLogger(verbose)),
+    new ClineAdapter(new ConsoleLogger(verbose)),
+    new ClaudeAdapter(new ConsoleLogger(verbose)),
+    new WindsurfAdapter(new ConsoleLogger(verbose)),
+    new RulesAdapter(new ConsoleLogger(verbose)),
+  ];
+  const validTargets = adapters.map((a) => a.targetName);
+
+  if (args[0] === "create") {
+    if (args.length < 2) usage();
+    target =
+      args[1] === "--all" ? "all" : typeof args[1] === "string" ? args[1] : "";
+    if (!target) usage();
+  } else if (
+    args[0] === "all" ||
+    (typeof args[0] === "string" && validTargets.includes(args[0]))
+  ) {
+    target = args[0] as string;
+  } else {
+    usage();
+  }
 
   const logger = new ConsoleLogger(verbose);
 
@@ -125,23 +160,15 @@ async function main() {
 
   const agentContent = await parseAgentDoc(agentDocPath);
 
-  const adapters = [
-    new GeminiAdapter(logger),
-    new CopilotAdapter(logger),
-    new ClineAdapter(logger),
-  ];
-
   const generator = new MultiTargetGenerator(adapters, logger);
 
   if (target === "all") {
     await generator.generateAll(agentContent, outDir, dryRun);
   } else {
-    const validTargets = adapters.map((a) => a.targetName);
     if (!validTargets.includes(target)) {
       logger.error(`Unknown target: ${target}`);
       usage();
     }
-    // Only call generateOne if target is a valid string
     await generator.generateOne(target as string, agentContent, outDir, dryRun);
   }
 }

@@ -2,13 +2,15 @@
   <img src="assets/thumbnail.png" alt="Bodyboard Thumbnail" height="150" />
 </p>
 
-# Bodyboard, canonical instructions for code helpers from a single AGENTS.md
+# Canonical instructions for coding assistants from a single AGENTS.md
 
 [![Biome](https://img.shields.io/badge/lint-biome-blue?logo=biome)](https://biomejs.dev/)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
 [![CI](https://github.com/louisbrulenaudet/bodyboard/actions/workflows/ci.yaml/badge.svg)](https://github.com/louisbrulenaudet/bodyboard/actions/workflows/ci.yaml)
 
-Maintaining consistency across diverse code assistant configuration files presents challenges, especially when updates are required for multiple tools and collaboration involves several contributors. **Bodyboard** addresses this by generating canonical instructions for code helpers from a single `AGENTS.md` file, thereby streamlining the production of adapter outputs for Gemini CLI, Copilot, Cline, and OpenAI Codex integrations.
+Maintaining consistency across diverse code assistant configuration files presents challenges, especially when updates are required for multiple tools and collaboration involves several contributors. **Bodyboard** addresses this by generating canonical instructions for code helpers from a single `AGENTS.md` file, thereby streamlining the production of adapter outputs for Gemini CLI, Copilot, Cline, Claude, Rules, Windsurf, and OpenAI Codex integrations.
+
+**Supported adapters:** Gemini, Copilot, Cline, Claude, Rules (Zod), Windsurf
 
 ```bash
 npm install -g bodyboard
@@ -31,6 +33,9 @@ bodyboard create gemini
 - Gemini: `bodyboard create gemini`
 - Copilot: `bodyboard create copilot`
 - Cline: `bodyboard create cline`
+- Claude: `bodyboard create claude`
+- Rules: `bodyboard create rules`
+- Windsurf: `bodyboard create windsurf`
 
 #### Options
 
