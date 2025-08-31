@@ -3,12 +3,12 @@
 
 import { existsSync } from "node:fs";
 import { join, resolve } from "node:path";
+import { ClaudeAdapter } from "./adapters/claude.js";
 import { ClineAdapter } from "./adapters/cline.js";
 import { CopilotAdapter } from "./adapters/copilot.js";
 import { GeminiAdapter } from "./adapters/gemini.js";
-import { ClaudeAdapter } from "./adapters/claude.js";
-import { WindsurfAdapter } from "./adapters/windsurf.js";
 import { RulesAdapter } from "./adapters/rules.js";
+import { WindsurfAdapter } from "./adapters/windsurf.js";
 import { MultiTargetGenerator } from "./core/generator.js";
 import { parseAgentDoc } from "./core/parser.js";
 import type { LogLevel, Logger } from "./core/types.js";

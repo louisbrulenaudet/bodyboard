@@ -6,6 +6,7 @@
 
 [![Biome](https://img.shields.io/badge/lint-biome-blue?logo=biome)](https://biomejs.dev/)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
+[![Known Vulnerabilities](https://snyk.io/test/github/louisbrulenaudet/bodyboard/badge.svg)](https://snyk.io/test/github/louisbrulenaudet/bodyboard)
 [![CI](https://github.com/louisbrulenaudet/bodyboard/actions/workflows/ci.yaml/badge.svg)](https://github.com/louisbrulenaudet/bodyboard/actions/workflows/ci.yaml)
 
 Maintaining consistency across diverse code assistant configuration files presents challenges, especially when updates are required for multiple tools and collaboration involves several contributors. **Bodyboard** addresses this by generating canonical instructions for code helpers from a single `AGENTS.md` file, thereby streamlining the production of adapter outputs for Gemini CLI, Copilot, Cline, Claude, Rules, Windsurf, and OpenAI Codex integrations.
