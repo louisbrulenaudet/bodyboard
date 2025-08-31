@@ -1,37 +1,29 @@
-# Bodyboard, canonical instructions for code helpers from a single AGENTS.md 🌊
-**Bodyboard** generates canonical instructions for code helpers from a single [`AGENTS.md`](./AGENTS.md) file. It streamlines adapter outputs for Gemini CLI, Copilot, Cline and OpenAI Codex integrations.
+<p align="center">
+  <img src="assets/thumbnail.png" alt="Bodyboard Thumbnail" height="150" />
+</p>
 
-## Installation
+# Bodyboard, canonical instructions for code helpers from a single AGENTS.md
 
-### Prerequisites
+[![Biome](https://img.shields.io/badge/lint-biome-blue?logo=biome)](https://biomejs.dev/)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
+[![CI](https://github.com/louisbrulenaudet/bodyboard/actions/workflows/ci.yaml/badge.svg)](https://github.com/louisbrulenaudet/bodyboard/actions/workflows/ci.yaml)
 
-- Node.js **v20 or higher** (ESM-only, no CommonJS support)
-- npm
-
-### Global Install
+Maintaining consistency across diverse code assistant configuration files presents challenges, especially when updates are required for multiple tools and collaboration involves several contributors. **Bodyboard** addresses this by generating canonical instructions for code helpers from a single `AGENTS.md` file, thereby streamlining the production of adapter outputs for Gemini CLI, Copilot, Cline, and OpenAI Codex integrations.
 
 ```bash
 npm install -g bodyboard
 ```
 
-### Local Install
-
-```bash
-npm install bodyboard --save-dev
-```
-
-## Usage
-
-### Generate All Adapter Outputs
+Generate adapter outputs for all supported formats:
 
 ```bash
 bodyboard create all
 ```
 
-Or, using npm scripts:
+Or, generate a specific adapter output. For example for Gemini CLI:
 
 ```bash
-npm run bodyboard create all
+bodyboard create gemini
 ```
 
 ### Generate Specific Adapter Output
@@ -52,52 +44,11 @@ npm run bodyboard create all
 - `.github/copilot-instructions.md`
 - `.clinerules/instructions.md`
 
----
-
-## Adapters & Outputs
-
-- **Gemini**: Generates `GEMINI.md``
-- **Copilot**: Generates `.github/copilot-instructions.md`
-- **Cline**: Generates `.clinerules/instructions.md`
-
-Adapters are implemented in [`src/adapters/`](./src/adapters/). Each adapter extends `TargetAdapter` and implements `emit()`.
-
----
-
 ## Workflow
 
 1. Edit [`AGENTS.md`](./AGENTS.md) with canonical instructions.
 2. Run CLI to generate all formats for code helpers.
 3. All writes are atomic; folders are created recursively.
 
----
-
-## Troubleshooting
-
-- **Node version error**: Ensure Node.js >= 20.
-- **Permission denied**: Run with appropriate permissions.
-- **Missing files**: Check that `AGENTS.md` exists.
-- **Adapter not found**: Verify adapter files in `src/adapters/`.
-
----
-
-## Development
-
-- `npm run build`: Compile TypeScript
-- `npm run lint`: Lint with Biome
-- `npm run format`: Format code with Biome
-- `npm run check`: Type and lint check
-
----
-
-## Contributing
-
-Contributions are welcome!
-- Open issues or pull requests on [GitHub](https://github.com/louisbrulenaudet/bodyboard).
-- See [`AGENTS.md`](./AGENTS.md) for canonical instructions.
-
----
-
-## License
-
-See [LICENSE](./LICENSE).
+## Feedback
+If you have any feedback, please reach out at [louisbrulenaudet@icloud.com](mailto:louisbrulenaudet@icloud.com).

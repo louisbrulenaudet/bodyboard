@@ -1,7 +1,7 @@
 {
   "name": "bodyboard",
-  "version": "0.1.0",
-  "description": "Generate canonical instructions for code helpers from a single AGENTS.md file",
+  "version": "0.1.1",
+  "description": "Canonical instructions for coding assistants from a single AGENTS.md ✨",
   "keywords": [
     "code",
     "helper",
