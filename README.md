@@ -3,6 +3,12 @@
 </p>
 
 # Bodyboard, canonical instructions for code helpers from a single AGENTS.md 🌊
+
+[![Biome](https://img.shields.io/badge/lint-biome-blue?logo=biome)](https://biomejs.dev/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![CI](https://github.com/louisbrulenaudet/bodyboard/actions/workflows/ci.yaml/badge.svg)](https://github.com/louisbrulenaudet/bodyboard/actions/workflows/ci.yaml)
+[![npm](https://img.shields.io/npm/v/bodyboard)](https://www.npmjs.com/package/bodyboard)
+
 **Bodyboard** generates canonical instructions for code helpers from a single [`AGENTS.md`](./AGENTS.md) file. It streamlines adapter outputs for Gemini CLI, Copilot, Cline and OpenAI Codex integrations.
 
 ## Installation
