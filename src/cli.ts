@@ -165,7 +165,7 @@ async function runGeneration(
   validTargets: string[],
   agentContent: string,
   outDir: string,
-  dryRun: boolean
+  dryRun: boolean,
 ) {
   if (target === "all") {
     await generator.generateAll(agentContent, outDir, dryRun);
@@ -201,7 +201,7 @@ async function main() {
     validTargets,
     agentContent,
     outDir,
-    dryRun
+    dryRun,
   );
 }
 
