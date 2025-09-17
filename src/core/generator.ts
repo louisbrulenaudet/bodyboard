@@ -5,8 +5,8 @@ import type { TargetAdapter } from "../adapters/base.js";
 import type { EmitResult, Logger } from "./types.js";
 
 export class MultiTargetGenerator {
-  private adapters: TargetAdapter[];
-  private logger: Logger;
+  private readonly adapters: TargetAdapter[];
+  private readonly logger: Logger;
 
   constructor(adapters: TargetAdapter[], logger: Logger) {
     this.adapters = adapters;

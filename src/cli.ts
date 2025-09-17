@@ -102,20 +102,14 @@ function usage() {
   process.exit(1);
 }
 
-async function main() {
-  const args = process.argv.slice(2);
-
-  // Determine if "create" is present or not
-  let target = "";
-  let verbose = false;
-  let dryRun = false;
-  let outDir = process.cwd();
-
+function parseCliArgs(args: string[]) {
   if (args.length === 0) usage();
 
-  verbose = args.includes("--verbose");
-  dryRun = args.includes("--dry-run");
+  const verbose = args.includes("--verbose");
+  const dryRun = args.includes("--dry-run");
+
   const outIdx = args.indexOf("--out");
+  let outDir = process.cwd();
   if (
     outIdx !== -1 &&
     typeof args[outIdx + 1] === "string" &&
@@ -124,8 +118,25 @@ async function main() {
     outDir = resolve(args[outIdx + 1] as string);
   }
 
-  // If first arg is "create", use second arg as target
-  // If first arg is "all" or a valid target, use first arg as target
+  // Determine target (may be "all" or a candidate target name)
+  let target = "";
+  if (args[0] === "create") {
+    if (args.length < 2) usage();
+    const arg1 = args[1];
+    if (arg1 === "--all") {
+      target = "all";
+    } else if (typeof arg1 === "string") {
+      target = arg1;
+    }
+    if (!target) usage();
+  } else {
+    target = args[0] as string;
+  }
+
+  return { target, verbose, dryRun, outDir };
+}
+
+function makeAdapters(verbose: boolean) {
   const adapters = [
     new GeminiAdapter(new ConsoleLogger(verbose)),
     new CopilotAdapter(new ConsoleLogger(verbose)),
@@ -135,42 +146,63 @@ async function main() {
     new RulesAdapter(new ConsoleLogger(verbose)),
   ];
   const validTargets = adapters.map((a) => a.targetName);
+  return { adapters, validTargets };
+}
 
-  if (args[0] === "create") {
-    if (args.length < 2) usage();
-    target =
-      args[1] === "--all" ? "all" : typeof args[1] === "string" ? args[1] : "";
-    if (!target) usage();
-  } else if (
-    args[0] === "all" ||
-    (typeof args[0] === "string" && validTargets.includes(args[0]))
-  ) {
-    target = args[0] as string;
-  } else {
-    usage();
-  }
-
-  const logger = new ConsoleLogger(verbose);
-
+function ensureAgentDocExists(logger: Logger) {
   const agentDocPath = join(process.cwd(), "AGENTS.md");
   if (!existsSync(agentDocPath)) {
     logger.error("AGENTS.md not found in current directory.");
     process.exit(2);
   }
+  return agentDocPath;
+}
 
+async function runGeneration(
+  generator: MultiTargetGenerator,
+  logger: Logger,
+  target: string,
+  validTargets: string[],
+  agentContent: string,
+  outDir: string,
+  dryRun: boolean
+) {
+  if (target === "all") {
+    await generator.generateAll(agentContent, outDir, dryRun);
+    return;
+  }
+
+  if (!validTargets.includes(target)) {
+    logger.error(`Unknown target: ${target}`);
+    usage();
+  }
+
+  await generator.generateOne(target, agentContent, outDir, dryRun);
+}
+
+async function main() {
+  const args = process.argv.slice(2);
+
+  const { target, verbose, dryRun, outDir } = parseCliArgs(args);
+
+  const { adapters, validTargets } = makeAdapters(verbose);
+
+  const logger = new ConsoleLogger(verbose);
+
+  const agentDocPath = ensureAgentDocExists(logger);
   const agentContent = await parseAgentDoc(agentDocPath);
 
   const generator = new MultiTargetGenerator(adapters, logger);
 
-  if (target === "all") {
-    await generator.generateAll(agentContent, outDir, dryRun);
-  } else {
-    if (!validTargets.includes(target)) {
-      logger.error(`Unknown target: ${target}`);
-      usage();
-    }
-    await generator.generateOne(target as string, agentContent, outDir, dryRun);
-  }
+  await runGeneration(
+    generator,
+    logger,
+    target,
+    validTargets,
+    agentContent,
+    outDir,
+    dryRun
+  );
 }
 
 main().catch((e) => {
