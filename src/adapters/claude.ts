@@ -2,7 +2,7 @@
 
 import { join } from "node:path";
 import { atomicWriteFile } from "../core/fs-util.js";
-import type { EmitResult, Logger } from "../core/types.js";
+import type { EmitResult } from "../core/types.js";
 import { TargetAdapter } from "./base.js";
 
 export class ClaudeAdapter extends TargetAdapter {
